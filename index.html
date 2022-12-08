@@ -4,53 +4,79 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="styles.css">
     <title>Fuso-horarios do Brasil</title>
+    <style>
+        body{
+            align-items: center;
+            background-color: lightskyblue;
+        }
+
+        .time-counter{
+            position: absolute;
+            font-size: 2em;
+            font-weight: 600;
+            color: #1C1C1C;
+        }
+
+        #timezones-container{
+            position: relative;
+            text-align: center;
+        }
+
+        #GMT-2{
+            top: 32%;
+            left: 92%;
+            transform: translate(-32%, -92%);
+        }
+
+        #GMT-3{
+            top: 47%;
+            left: 72%;
+            transform: translate(-47%, -72%);
+        }
+
+        #GMT-4{
+            top: 45%;
+            left: 43%;
+            transform: translate(-45%, -43%);
+        }
+
+        #GMT-5{
+            top: 31%;
+            left: 11.5%;
+            transform: translate(-31%, -11.5%);
+        }
+    </style>
     <script>
-        // function requestNewAdvice(){ 
-        //     var adviceRequest = new XMLHttpRequest();
-        //     adviceNumber = Math.floor(Math.random() * 200);
-        //     adviceRequest.open("GET", "https://api.adviceslip.com/advice/" + adviceNumber, true);
-        //     adviceRequest.responseType = "json";
-        //     adviceRequest.send();
-        //     adviceRequest.onreadystatechange = function(){
-        //         console.log(adviceRequest.readyState);
-        //         if(adviceRequest.readyState == 4 && adviceRequest.status == 200){
-        //             console.log(adviceRequest.response);
-        //             var advice = adviceRequest.response.slip.advice;
-        //             console.log(advice);
-        //             document.getElementById("advice").innerHTML = advice;
-        //         }
-        //     }
-        // }
-        // setInterval(requestNewAdvice, 10000);
-        function requestActualTime(){
-            var timeRequest = new XMLHttpRequest();
-            timeRequest.open("GET", "https://worldtimeapi.org/api/timezone/America/Sao_Paulo", true);
-            timeRequest.responseType = "json";
-            timeRequest.send();
-            timeRequest.onreadystatechange = function(){
-                console.log(timeRequest.readyState);
-                if(timeRequest.readyState == 4 && timeRequest.status == 200){
+        function requestTime(timezone){
+            timezone = String(timezone).replace("-", "+");
+            let timeRequest = new XMLHttpRequest();
+            timeRequest.onreadystatechange=function(){
+                if (timeRequest.readyState == 4 && timeRequest.status == 200){
                     console.log(timeRequest.response);
-                    var time = timeRequest.response.datetime;
-                    console.log(time);
-                    time = time.substring(11, 19);
-                    document.getElementById("time").innerHTML = time;
+                    let datetime = timeRequest.response.datetime;
+                    let horaAtual = String(datetime).substring(11, 19);
+                    document.getElementById(timezone.replace("+", "-")).innerHTML = horaAtual;
                 }
             }
+            timeRequest.open("GET","http://worldtimeapi.org/api/timezone/Etc/" + timezone, true);
+            timeRequest.responseType = "json";
+            timeRequest.send();
         }
-        setInterval(requestActualTime, 1000);
+
+        setInterval(requestTime, 1000, "GMT-2");
+        setInterval(requestTime, 1000, "GMT-3");
+        setInterval(requestTime, 1000, "GMT-4");
+        setInterval(requestTime, 1000, "GMT-5");
     </script>
 </head>
 <body>
-    <div: id="timeRoot">
-        <h3>Current time:</h3>
-        <p: id="time"></p>
-    </div>
-    <div>
-        <h3>Advice:</h3>
-        <p id="advice"> asdasd</p>
+    <div id="timezones-container">
+        <img src="assets/fuso.jpg" alt="Brazil's timezones" style="width: 100%;">
+        <div class="time-counter" id="GMT-2"></div>
+        <div class="time-counter" id="GMT-3"></div>
+        <div class="time-counter" id="GMT-4"></div>
+        <div class="time-counter" id="GMT-5"></div>
     </div>
 </body>
 </html>
