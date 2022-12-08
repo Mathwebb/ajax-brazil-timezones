@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <title>Fuso-horarios do Brasil</title>
+    <script>
+        // function requestNewAdvice(){ 
+        //     var adviceRequest = new XMLHttpRequest();
+        //     adviceNumber = Math.floor(Math.random() * 200);
+        //     adviceRequest.open("GET", "https://api.adviceslip.com/advice/" + adviceNumber, true);
+        //     adviceRequest.responseType = "json";
+        //     adviceRequest.send();
+        //     adviceRequest.onreadystatechange = function(){
+        //         console.log(adviceRequest.readyState);
+        //         if(adviceRequest.readyState == 4 && adviceRequest.status == 200){
+        //             console.log(adviceRequest.response);
+        //             var advice = adviceRequest.response.slip.advice;
+        //             console.log(advice);
+        //             document.getElementById("advice").innerHTML = advice;
+        //         }
+        //     }
+        // }
+        // setInterval(requestNewAdvice, 10000);
+        function requestActualTime(){
+            var timeRequest = new XMLHttpRequest();
+            timeRequest.open("GET", "https://worldtimeapi.org/api/timezone/America/Sao_Paulo", true);
+            timeRequest.responseType = "json";
+            timeRequest.send();
+            timeRequest.onreadystatechange = function(){
+                console.log(timeRequest.readyState);
+                if(timeRequest.readyState == 4 && timeRequest.status == 200){
+                    console.log(timeRequest.response);
+                    var time = timeRequest.response.datetime;
+                    console.log(time);
+                    time = time.substring(11, 19);
+                    document.getElementById("time").innerHTML = time;
+                }
+            }
+        }
+        setInterval(requestActualTime, 1000);
+    </script>
+</head>
+<body>
+    <div: id="timeRoot">
+        <h3>Current time:</h3>
+        <p: id="time"></p>
+    </div>
+    <div>
+        <h3>Advice:</h3>
+        <p id="advice"> asdasd</p>
+    </div>
+</body>
+</html>
